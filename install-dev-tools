@@ -56,9 +56,9 @@ curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
 echo "✅ Instalación completada."
 echo "Comprueba versiones:"
-echo "kubectl $(kubectl version --client --short)"
+echo "kubectl $(kubectl version --client)"
 echo "kind $(kind --version)"
 echo "terraform $(terraform version | head -n 1)"
 echo "aws $(aws --version)"
 echo "eksctl $(eksctl version)"
-echo "helm $(helm version --short)"
+echo "helm $(helm version)"
