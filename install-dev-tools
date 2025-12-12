@@ -1,0 +1,64 @@
+#!/bin/bash
+set -e
+
+echo "👉 Instalando dependencias para entorno AWS + K8s local..."
+
+# ---------------------------
+# kubectl
+# ---------------------------
+echo "📦 Instalando kubectl..."
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+sudo chmod +x kubectl
+sudo mv kubectl /usr/local/bin/
+
+# ---------------------------
+# kind
+# ---------------------------
+echo "📦 Instalando kind..."
+curl -Lo kind https://kind.sigs.k8s.io/dl/latest/kind-linux-amd64
+chmod +x kind
+sudo mv kind /usr/local/bin/
+
+# ---------------------------
+# terraform
+# ---------------------------
+echo "📦 Instalando terraform..."
+sudo apt-get update -y
+sudo apt-get install -y wget unzip
+
+TERRAFORM_VERSION=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r .current_version)
+wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+sudo mv terraform /usr/local/bin/
+rm terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+
+# ---------------------------
+# AWS CLI v2
+# ---------------------------
+echo "📦 Instalando AWS CLI..."
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+rm -rf aws awscliv2.zip
+
+# ---------------------------
+# eksctl
+# ---------------------------
+echo "📦 Instalando eksctl..."
+curl -sL "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz
+sudo mv eksctl /usr/local/bin/
+
+# ---------------------------
+# helm
+# ---------------------------
+echo "📦 Instalando helm..."
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+echo "✅ Instalación completada."
+echo "Comprueba versiones:"
+echo "kubectl $(kubectl version --client --short)"
+echo "kind $(kind --version)"
+echo "terraform $(terraform version | head -n 1)"
+echo "aws $(aws --version)"
+echo "eksctl $(eksctl version)"
+echo "helm $(helm version --short)"
