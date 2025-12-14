@@ -6,6 +6,7 @@
 
 # Apply changes
 `terraform apply`
-
+With variables inline: `terraform apply -var="bucket_name=new-bucket" -var="region=us-east-1"`
+With variables file: `terraform apply -var-file="dev.tfvars"`
 # Verify terraform state
 `terraform state list`

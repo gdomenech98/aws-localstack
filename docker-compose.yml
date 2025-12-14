@@ -5,7 +5,7 @@ services:
       - "4566:4566"
       - "4510-4559:4510-4559"
     environment:
-      - SERVICES=s3,dynamodb,ecr,iam,ssm,secretsmanager,sts,cloudformation
+      - SERVICES=s3,dynamodb,ecr,iam,ssm,secretsmanager,sts,cloudformation,s3control
       - DEBUG=1
     volumes:
       - "./localstack:/var/lib/localstack"
