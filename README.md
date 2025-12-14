@@ -17,7 +17,11 @@
 - aws aws-cli/2.32.15 Python/3.13.11 Linux/6.11.0-29-generic exe/x86_64.ubuntu.24
 - eksctl 0.220.0
 
-# Setup
+# 1. Setup
 1. Install deps using `./install-dev-tools`
 2. Start localstack using `docker-compose up -d`
 2. Check services: http://localhost:4566/_localstack/health 
+
+# 2. Build 'apps' images and upload them to registry (ECR or docker local registry)
+
+# 3. Create a cluster if already not created
