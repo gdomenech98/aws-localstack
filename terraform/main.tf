@@ -5,6 +5,7 @@ provider "aws" {
   skip_credentials_validation = true // For localstack development
   skip_metadata_api_check     = true // For localstack development
   skip_requesting_account_id  = true // For localstack development
+  s3_use_path_style           = true // For localstack development
 
   endpoints {
     s3             = "http://127.0.0.1:4566"
@@ -20,7 +21,8 @@ provider "aws" {
 # S3 bucket
 resource "aws_s3_bucket" "frontend_bucket" {
   bucket = var.bucket_name // name of the bucket
-  lifecycle { // Ignore tags for localstack
+
+  lifecycle {
     ignore_changes = [tags, tags_all]
   }
 }

@@ -9,3 +9,11 @@ services:
       - DEBUG=1
     volumes:
       - "./localstack:/var/lib/localstack"
+  
+  # Run local registry of docker (for lockalstack)
+  registry:
+    image: registry:2
+    container_name: registry
+    ports:
+      - "5000:5000"
+    restart: always
