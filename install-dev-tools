@@ -28,7 +28,7 @@ sudo apt-get install -y wget unzip
 
 TERRAFORM_VERSION=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r .current_version)
 wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+unzip -o terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 sudo mv terraform /usr/local/bin/
 rm terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 
@@ -54,6 +54,13 @@ sudo mv eksctl /usr/local/bin/
 echo "📦 Instalando helm..."
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
+# ---------------------------
+# AWS Local 
+# ---------------------------
+echo "📦 Instalando awslocal..."
+sudo pip install localstack-client
+
+
 echo "✅ Instalación completada."
 echo "Comprueba versiones:"
 echo "kubectl $(kubectl version --client)"
@@ -62,3 +69,4 @@ echo "terraform $(terraform version | head -n 1)"
 echo "aws $(aws --version)"
 echo "eksctl $(eksctl version)"
 echo "helm $(helm version)"
+echo "awslocal $(awslocal --version)"

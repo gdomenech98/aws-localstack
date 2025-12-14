@@ -20,3 +20,4 @@
 # Setup
 1. Install deps using `./install-dev-tools`
 2. Start localstack using `docker-compose up -d`
+2. Check services: http://localhost:4566/_localstack/health 
