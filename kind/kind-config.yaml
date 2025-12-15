@@ -4,5 +4,5 @@ nodes:
   - role: control-plane
 containerdConfigPatches:
 - |-
-  [plugins."io.containerd.grpc.v1.cri".registry.mirrors."localhost:5000"]
-    endpoint = ["http://registry:5000"]
+  [plugins."io.containerd.grpc.v1.cri".registry.mirrors."51.38.38.197:5000"]
+    endpoint = ["http://51.38.38.197:5000"]
