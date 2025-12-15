@@ -9,11 +9,9 @@ import {
   Image,
 } from 'tamagui';
 import { ColorToggleButton } from '../theme';
-import { HeaderMenu } from 'app/bundles/custom/header/HeaderMenu';
 import { useThemeSetting } from '@tamagui/next-theme';
 import { useRouter } from 'next/router';
 import { config } from 'app/config';
-import { HeaderMenuContent, TwoFactorAuthDialog } from 'app/bundles/custom/header/HeaderMenuContent';
 
 export type HeaderProps = {
   floating?: boolean
@@ -143,14 +141,10 @@ export const HeaderContents = React.memo(({ isScrolled, ...props }: { isScrolled
           tag="nav"
         >
           {!props.disableMenu && (<XStack ai="center" space="$3">
-            <HeaderMenu open={open} setOpen={setOpen}>
-              <HeaderMenuContent setOpen={setOpen} setTwoFactorDialogOpen={setTwoFactorDialogOpen} />
-            </HeaderMenu>
           </XStack>
           )}
         </XStack>
       </XStack>
-      <TwoFactorAuthDialog state={twoFactorDialogOpen} onClose={() => setTwoFactorDialogOpen(false)} />
     </>
   )
 })
