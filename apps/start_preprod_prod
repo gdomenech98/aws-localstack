@@ -1,0 +1,6 @@
+
+
+
+#!/bin/bash
+# where: http://217.182.68.103 is the ip of development server
+SERVER_URL=http://51.38.38.197 ./start --prod

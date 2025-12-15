@@ -1,0 +1,8 @@
+#!/bin/bash
+
+export DOCKER_COMPOSE_CMD="docker-compose"
+
+# Check if 'docker compose' is available
+if docker compose version >/dev/null 2>&1; then
+  DOCKER_COMPOSE_CMD="docker compose"
+fi

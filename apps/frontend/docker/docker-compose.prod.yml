@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  frontend:
+    build:
+      context: ../../
+      dockerfile: frontend/docker/Dockerfile
+      args: # Need to pass it as args in order to set it as env when building project
+        NEXT_PUBLIC_SERVER_URL: ${SERVER_URL:-http://localhost}
+
+    environment:
+      - NODE_ENV=production
+      - JWT_SECRET=mysecret
+      - MQTT_SERVER=ws://localhost/mqtt

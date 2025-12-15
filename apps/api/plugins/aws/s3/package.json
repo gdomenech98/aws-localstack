@@ -1,0 +1,23 @@
+{
+  "name": "@aws-plugin/s3",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3":"~3.744.0",
+    "@aws-sdk/s3-request-presigner":"~3.744.0",
+    "@aws-sdk/client-sts": "~3.744.0"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.10",
+    "typescript": "^4.5.5",
+    "@jest/globals": "~29.7.0",
+    "@types/jest": "~29.5.5",
+    "jest": "~29.7.0",
+    "ts-jest": "~29.1.1"
+  }
+}

@@ -1,0 +1,13 @@
+FROM node:20-bullseye-slim
+
+# Install any necessary dependencies (optional)
+RUN apt-get update && apt-get install -y ca-certificates wget && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y zip
+
+WORKDIR /app
+COPY ./api .
+
+RUN yarn
+RUN yarn build
+
+ENTRYPOINT yarn start

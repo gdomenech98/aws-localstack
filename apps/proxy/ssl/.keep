@@ -1,0 +1,8 @@
+Include:
+mydomain.com.ca-bundle
+mydomain.com.crt
+mydomain.com.key
+
+NOTE: CGet .key, .crt, .ca-bundle files from your domain provider
+NOTE: ca-bundle and crt have to be unified: 
+`cat mydomain.ca-bundle mydomain.crt >> mydomain.crt`

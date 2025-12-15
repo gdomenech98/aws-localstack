@@ -1,0 +1,65 @@
+#!/bin/bash
+
+source ./prepare
+export PWD=$(pwd) # Used in compose files
+export DEV_MODE=true
+export DEPLOY=false # When deploy mode is enabled SSL is enabled to services.wattius.com
+export PROD=false
+export SKIP_LOGS=false
+
+for arg in "$@"; do # Loop through all arguments to check if --dev is present
+  case "$arg" in
+    --prod)
+      DEV_MODE=false
+      PROD=true
+      echo "Running in production!"
+      shift
+      ;;
+    --deploy)
+      DEPLOY=true
+      echo "Enabled deploy mode!"
+      shift
+      ;;
+      --skip-logs)
+      SKIP_LOGS=true
+      echo "Skipping logs"
+      shift
+      ;;
+  esac
+done
+
+export SERVICES_COMPOSE_FILES=""
+
+# This script gets the docker.yml files and docker-compose.dev.yml files
+# from each service inside "<root_project_dir>/services"
+# If flag --prod is provided only returns docker-compose.prod.yml files
+# Always try to read commoon file: docker-compose.yml file
+microservicesDir="./"
+servicesDir=($microservicesDir*/)
+
+for dir in "${servicesDir[@]}"; do
+  dir="${dir%/}" # Remove last backslash from dir
+  echo $dir
+  if [[ -f "$dir/docker/docker-compose.yml" ]]; then
+    SERVICES_COMPOSE_FILES+=" -f $dir/docker/docker-compose.yml"
+  fi
+  if [[ "$DEV_MODE" == "true" && -f "$dir/docker/docker-compose.dev.yml" ]]; then # Check if docker-compose.dev.yml exists in the directory
+    SERVICES_COMPOSE_FILES+=" -f $dir/docker/docker-compose.dev.yml"
+  else
+    if [[ -f "$dir/docker/docker-compose.prod.yml" ]]; then # Check if docker-compose.prod.yml exists in the directory
+      SERVICES_COMPOSE_FILES+=" -f $dir/docker/docker-compose.prod.yml"
+    fi
+  fi
+done
+
+
+echo "Docker compose command: $DOCKER_COMPOSE_CMD"
+echo "Compose files: $SERVICES_COMPOSE_FILES"
+
+# Build docker images
+echo "Building project..."
+DEPLOY=${DEPLOY} PROD=${PROD} $DOCKER_COMPOSE_CMD -p my_aws_localstack_project $SERVICES_COMPOSE_FILES build
+# Execute Docker Compose command with all found compose files
+echo "Starting project..."
+DEPLOY=${DEPLOY} PROD=${PROD} $DOCKER_COMPOSE_CMD -p my_aws_localstack_project $SERVICES_COMPOSE_FILES up -d
+[ "$SKIP_LOGS" = false ] && ./logs

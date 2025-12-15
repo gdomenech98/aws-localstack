@@ -1,0 +1,3 @@
+#!/bin/bash
+source ./prepare
+$DOCKER_COMPOSE_CMD -p my_template_project logs -f

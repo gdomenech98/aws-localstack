@@ -1,27 +1,43 @@
 {
   "name": "frontend",
-  "version": "1.0.0",
-  "description": "Next.js frontend application",
+  "private": true,
+  "workspaces": [
+    "./apps/*",
+    "./packages/*",
+    "./plugins/push-notifications"
+  ],
   "scripts": {
-    "dev": "next dev -p ${PORT:-3001}",
-    "build": "next build",
-    "start": "next start -p ${PORT:-3001}",
-    "lint": "eslint src/**/*.{ts,tsx}",
-    "type-check": "tsc --noEmit"
+    "native": "yarn build && cd apps/expo && yarn start",
+    "watch": "yarn workspaces foreach -pi run watch",
+    "vercel:install": "yarn set version 3.5 && yarn install",
+    "web": "yarn build && cd apps/next && yarn next",
+    "web:extract": "DISABLE_EXTRACTION=false yarn workspace next-app dev",
+    "web:prod": "yarn workspace next-app build",
+    "web:prod:serve": "yarn workspace next-app serve",
+    "fix": "manypkg fix",
+    "postinstall": "yarn check-deps && yarn build",
+    "build": "yarn workspaces foreach --all --exclude next-app run build",
+    "upgrade:tamagui": "yarn up '*tamagui*'@latest '@tamagui/*'@latest react-native-web-lite@latest",
+    "upgrade:tamagui:canary": "yarn up '*tamagui*'@canary '@tamagui/*'@canary react-native-web-lite@canary",
+    "check-deps": "check-dependency-version-consistency ."
+  },
+  "resolutions": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-refresh": "^0.14.0",
+    "react-native-svg": "15.8.0",
+    "react-native-web": "~0.19.13"
   },
   "dependencies": {
-    "next": "^14.0.4",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-  },
-  "devDependencies": {
-    "@types/node": "^20.10.6",
-    "@types/react": "^18.2.45",
-    "@types/react-dom": "^18.2.18",
-    "@typescript-eslint/eslint-plugin": "^6.16.0",
-    "@typescript-eslint/parser": "^6.16.0",
-    "eslint": "^8.56.0",
-    "eslint-config-next": "^14.0.4",
+    "@babel/runtime": "^7.26.0",
+    "@manypkg/cli": "^0.19.1",
+    "check-dependency-version-consistency": "^3.0.3",
+    "eslint": "^8.21.0",
+    "moment": "~2.30.1",
+    "node-gyp": "^9.3.1",
+    "prettier": "^2.7.1",
+    "turbo": "^1.10.3",
     "typescript": "^5.3.3"
-  }
+  },
+  "packageManager": "yarn@4.1.0"
 }

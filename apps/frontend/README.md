@@ -1,220 +1,95 @@
-# Frontend Application
+# Tamagui + Solito + Next + Expo Monorepo
 
-A Next.js frontend application that displays API health status and is configured to work with the backend API service.
-
-## Features
-
-- **Next.js 14** - React framework with server and client components
-- **TypeScript** - Fully typed application
-- **Hot Reload** - Development mode with instant updates
-- **Environment Configuration** - Easy API URL and port configuration
-- **API Integration** - Fetches and displays health status from API
-- **Responsive Design** - Mobile-friendly UI
-- **Multi-stage Docker** - Optimized images for dev and production
-
-## Project Structure
-
-```
-frontend/
-├── src/
-│   ├── app/
-│   │   ├── layout.tsx           # Root layout component
-│   │   ├── page.tsx             # Home page component
-│   │   ├── page.module.css      # Page styles
-│   │   └── globals.css          # Global styles
-│   └── lib/
-│       └── api.ts               # API client utility
-├── public/                       # Static files
-├── dockerfile                    # Multi-stage Dockerfile
-├── docker-compose.yml           # Docker Compose configuration
-├── package.json                 # Dependencies and scripts
-├── tsconfig.json                # TypeScript configuration
-├── next.config.js              # Next.js configuration
-├── .env.local                  # Environment variables
-└── README.md                   # This file
+```sh
+npm create tamagui
 ```
 
-## Environment Variables
+## 🔦 About
 
-Configure these environment variables in `.env.local` or via Docker:
+This monorepo is a starter for an Expo + Next.js + Tamagui + Solito app.
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `NEXT_PUBLIC_API_URL` | `http://localhost:3000` | The backend API server URL |
-| `NEXT_PUBLIC_FRONTEND_PORT` | `3001` | The frontend application port |
+Many thanks to [@FernandoTheRojo](https://twitter.com/fernandotherojo) for the Solito starter monorepo which this was forked from. Check out his [talk about using expo + next together at Next.js Conf 2021](https://www.youtube.com/watch?v=0lnbdRweJtA).
 
-## Quick Start
+## 📦 Included packages
 
-### Prerequisites
+- [Tamagui](https://tamagui.dev) 🪄
+- [solito](https://solito.dev) for cross-platform navigation
+- Expo SDK
+- Next.js
+- Expo Router
 
-- Node.js 20+ (or Docker)
+## 🗂 Folder layout
 
-### Local Development
+The main apps are:
 
-Using Node.js directly:
+- `expo` (native)
+- `next` (web)
 
-```bash
-npm install
-npm run dev
+- `packages` shared packages across apps
+  - `ui` includes your custom UI kit that will be optimized by Tamagui
+  - `app` you'll be importing most files from `app/`
+    - `features` (don't use a `screens` folder. organize by feature.)
+    - `provider` (all the providers that wrap the app, and some no-ops for Web.)
+
+You can add other folders inside of `packages/` if you know what you're doing and have a good reason to.
+
+## 🏁 Start the app
+
+- Install dependencies: `yarn`
+
+- Next.js local dev: `yarn web`
+
+To run with optimizer on in dev mode (just for testing, it's faster to leave it off): `yarn web:extract`. To build for production `yarn web:prod`.
+
+To see debug output to verify the compiler, add `// debug` as a comment to the top of any file.
+
+- Expo local dev: `yarn native`
+
+## UI Kit
+
+Note we're following the [design systems guide](https://tamagui.dev/docs/guides/design-systems) and creating our own package for components.
+
+See `packages/ui` named `@my/ui` for how this works.
+
+## 🆕 Add new dependencies
+
+### Pure JS dependencies
+
+If you're installing a JavaScript-only dependency that will be used across platforms, install it in `packages/app`:
+
+```sh
+cd packages/app
+yarn add date-fns
+cd ../..
+yarn
 ```
 
-The frontend will be available at `http://localhost:3001`
+### Native dependencies
 
-### Development with Docker
+If you're installing a library with any native code, you must install it in `expo`:
 
-```bash
-docker-compose up frontend-dev
+```sh
+cd apps/expo
+yarn add react-native-reanimated
+cd ..
+yarn
 ```
 
-### Production Build
+## Update new dependencies
 
-Using Node.js:
+### Pure JS dependencies
 
-```bash
-npm install
-npm run build
-npm start
+```sh
+yarn upgrade-interactive
 ```
 
-Using Docker:
+You can also install the native library inside of `packages/app` if you want to get autoimport for that package inside of the `app` folder. However, you need to be careful and install the _exact_ same version in both packages. If the versions mismatch at all, you'll potentially get terrible bugs. This is a classic monorepo issue. I use `lerna-update-wizard` to help with this (you don't need to use Lerna to use that lib).
 
-```bash
-docker build -t frontend:prod --target production .
-docker run -p 3001:3001 -e NEXT_PUBLIC_API_URL=http://api:3000 frontend:prod
-```
+You may potentially want to have the native module transpiled for the next app. If you get error messages with `Cannot use import statement outside a module`, you may need to use `transpilePackages` in your `next.config.js` and add the module to the array there.
 
-## NPM Scripts
+### Deploying to Vercel
 
-- `npm run dev` - Start development server with hot reload (port 3001)
-- `npm run build` - Build the production-ready Next.js application
-- `npm start` - Start the production server (port 3001)
-- `npm run lint` - Run ESLint for code quality
-- `npm run type-check` - Check TypeScript types without building
-
-## Docker
-
-### Multi-stage Builds
-
-The Dockerfile has three stages:
-
-1. **builder** - Compiles the Next.js application
-2. **development** - Includes all dependencies with hot reload
-3. **production** - Optimized image with only production dependencies
-
-### Build Development Image
-
-```bash
-docker build -t frontend:dev --target development .
-```
-
-### Build Production Image
-
-```bash
-docker build -t frontend:prod --target production .
-```
-
-## API Integration
-
-The application fetches the health status from the backend API every 10 seconds.
-
-### API Endpoint Used
-
-- `GET /health` - Retrieves the API health status
-
-### Example API Response
-
-```json
-{
-  "status": "healthy",
-  "timestamp": "2024-12-15T10:30:45.123Z"
-}
-```
-
-## Pages
-
-### Home Page (`/`)
-
-Displays:
-- API health status with auto-refresh every 10 seconds
-- Configuration details (API URL and frontend port)
-- Instructions for environment variable setup
-
-## Configuration Examples
-
-### Local Development
-
-```bash
-# .env.local
-NEXT_PUBLIC_API_URL=http://localhost:3000
-NEXT_PUBLIC_FRONTEND_PORT=3001
-```
-
-### Docker Network
-
-```bash
-# Docker Compose environment
-NEXT_PUBLIC_API_URL=http://api:3000
-NEXT_PUBLIC_FRONTEND_PORT=3001
-```
-
-### Production
-
-```bash
-# Production environment
-NEXT_PUBLIC_API_URL=https://api.example.com
-NEXT_PUBLIC_FRONTEND_PORT=3001
-```
-
-## Docker Compose
-
-Run both frontend (dev) and API services:
-
-```bash
-docker-compose up
-```
-
-Services:
-- `frontend-dev` - Frontend in development mode (port 3001)
-- `frontend-prod` - Frontend in production mode (port 3002)
-- `api-dev` - Backend API in development mode (port 3000)
-
-## Troubleshooting
-
-### Hot reload not working
-
-- Ensure volumes are correctly mounted in docker-compose.yml
-- Restart the container: `docker-compose restart frontend-dev`
-
-### API connection error
-
-- Check that API_URL environment variable matches the API server location
-- Verify the API service is running and accessible
-- Check browser console for CORS or network errors
-
-### Port already in use
-
-- Change the port in docker-compose.yml or use: `docker run -p 3003:3001 frontend:dev`
-
-### Build fails
-
-- Clear Next.js cache: `rm -rf .next`
-- Reinstall dependencies: `rm -rf node_modules && npm install`
-- Rebuild without cache: `docker build --no-cache -t frontend:dev --target development .`
-
-## Performance
-
-- **Optimized Bundle** - Code splitting and lazy loading
-- **Image Optimization** - Automatic image optimization
-- **CSS Optimization** - CSS modules for scoped styling
-- **Type Safety** - Full TypeScript support prevents runtime errors
-
-## Security
-
-- **Environment Variables** - Sensitive values stored securely
-- **Type Safety** - TypeScript prevents many security issues
-- **CORS Handling** - Proper handling of cross-origin requests
-- **XSS Protection** - React's built-in XSS protection
-
-## License
-
-MIT
+- Root: `apps/next`
+- Install command to be `yarn set version stable && yarn install`
+- Build command: leave default setting
+- Output dir: leave default setting

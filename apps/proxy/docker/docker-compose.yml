@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  proxy:
+    working_dir: /etc/nginx
+    container_name: proxy
+    build:
+      context: ../../
+      dockerfile: proxy/docker/Dockerfile
+      args:
+        - DEPLOY=${DEPLOY}
+        - PROD=${PROD}
+    depends_on:
+      - api
+      - frontend
+    ports:
+      - 80:80
+      - 443:443
+    restart: always

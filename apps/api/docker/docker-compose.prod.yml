@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  api:
+    build:
+      context: ../../
+      dockerfile: api/docker/Dockerfile
+    environment:
+      - NODE_ENV=production
+      - JWT_SECRET=mysecret
+      - API_URL=http://proxy
+      - FRONTEND_URL=${SERVER_URL:-http://localhost}
+      - ACCESS_JWT_TOKEN_EXPIRATION=15m
+      - REFRESH_JWT_TOKEN_EXPIRATION=30d

@@ -1,0 +1,140 @@
+.hero-blur {
+    background: radial-gradient(var(--color2) 0%, transparent 72%);
+}
+
+.t_dark .hero-blur {
+    background: radial-gradient(var(--color6) 0%, transparent 72%);
+}
+
+.bg-dot-grid {
+    contain: paint;
+    background-position: center center;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='23px' height='23px' viewBox='0 0 23 23' fill='none'%3E%3Ccircle cx='22' cy='22' r='0.88' fill='rgba(115,115,115,0.3)' /%3E%3C/svg%3E%0A");
+}
+
+.bg-grid {
+    contain: paint;
+    background-position: center center;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoAQMAAAC2MCouAAAABlBMVEWBgYFHcEyMaNnGAAAAAnRSTlP/AOW3MEoAAAAQSURBVHgBY4CA+v9AMBJIALryrr41QoYVAAAAAElFTkSuQmCC');
+    opacity: 0.05;
+}
+
+.t_dark .bg-grid {
+    opacity: 0.125;
+}
+
+@media (prefer-color-scheme: dark) {
+    .bg-grid {
+        opacity: 0.125;
+    }
+}
+
+.mask-gradient-both {
+    mask-image: linear-gradient(rgba(0, 0, 0, 1), transparent, rgba(0, 0, 0, 1));
+}
+
+.mask-gradient-down {
+    mask-image: linear-gradient(rgba(0, 0, 0, 1), transparent);
+}
+
+.mask-gradient-up {
+    mask-image: linear-gradient(transparent 20%, rgba(0, 0, 0, 1));
+}
+
+
+
+/* Chrome, Edge and Safari */
+*::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+    border-radius: 8px;
+    background-color: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.125);
+}
+
+*::-webkit-scrollbar-thumb:active {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+*::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+
+.disable-scrollbar {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+}
+
+.disable-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.scroll-container::before,
+.scroll-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.scroll-container::before {
+    left: 0;
+    width: 10px;
+    background: linear-gradient(to right, var(--background), transparent);
+}
+
+.scroll-container::after {
+    right: 0;
+    width: 30px;
+    background: linear-gradient(to left, var(--background), transparent);
+}
+
+.custom-scroll-container::before,
+.custom-scroll-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.custom-scroll-container::before {
+    left: 0;
+    width: 10px;
+    background: linear-gradient(to right, rgba(255, 255, 255), transparent);
+}
+
+.custom-scroll-container::after {
+    right: 0;
+    width: 30px;
+    background: linear-gradient(to left, rgba(255, 255, 255), transparent);
+}
+
+.custom-datatable-sticky-columns {
+    -webkit-box-shadow: 1px 18px 15px -17px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: 1px 18px 15px -17px rgba(0, 0, 0, 0.05);
+    box-shadow: 1px 18px 15px -17px rgba(0, 0, 0, 0.05);
+}
+
+
+.datatable-sticky-columns {
+    -webkit-box-shadow: 1px 28px 15px -17px var(--color3);
+    -moz-box-shadow: 1px 28px 15px -17px var(--color3);
+    box-shadow: 1px 28px 15px -17px var(--color3);
+}

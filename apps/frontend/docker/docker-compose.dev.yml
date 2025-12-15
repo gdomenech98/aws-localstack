@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  frontend:
+    image: node:20-bullseye-slim
+    working_dir: /app
+    entrypoint: /bin/bash
+    command: -c "yarn && yarn web"
+    environment:
+      - NODE_ENV=development
+      - JWT_SECRET=mysecret
+      - MQTT_SERVER=ws://localhost/mqtt
+    volumes:
+      - ${PWD}/apps/frontend:/app
