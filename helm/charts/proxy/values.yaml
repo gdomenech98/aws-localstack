@@ -1,0 +1,19 @@
+ingress:
+  enabled: true
+  className: nginx
+  hosts:
+    - paths:
+        - path: /api
+          pathType: Prefix
+          service:
+            name: api
+            port: 3000
+        - path: /
+          pathType: Prefix
+          service:
+            name: frontend
+            port: 8151
+
+# Service configuration for Helm test
+service:
+  port: 80  # Test pod can access via Ingress port 80

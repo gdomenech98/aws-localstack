@@ -26,3 +26,27 @@
 # 2. Build 'apps' images and upload them to registry (ECR or docker local registry)
 
 # 3. Create a cluster if already not created
+
+# 4. Selecciona el contexto del cluster
+kubectl config use-context kind-my-cluster
+kubectl get nodes   # verifica que el cluster está activo
+
+# 5. Instala/Despliega un chart
+helm install <release-name> ./charts/frontend -f ./charts/frontend/values-prod.yaml
+helm install <release-name> ./charts/api -f ./charts/api/values-prod.yaml
+
+<release-name> → nombre único para el deployment en Helm.
+
+Si ya existe el release, usa upgrade:
+
+helm upgrade <release-name> ./charts/frontend -f ./charts/frontend/values-prod.yaml
+
+# 6. Verifica los pods y servicios
+kubectl get pods
+kubectl get svc
+kubectl get ingress
+
+
+kubectl describe pod <pod-name> → detalles y logs.
+
+kubectl logs <pod-name> → logs del contenedor.

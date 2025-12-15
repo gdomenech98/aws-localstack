@@ -1,0 +1,26 @@
+replicaCount: 1 # Number of replicas 
+
+image:
+  repository: 51.38.38.197:5000/api
+  tag: v1.0.0  # versión build del Dockerfile
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 3000
+
+env:
+  NODE_ENV: production
+  JWT_SECRET: mysecret
+  API_URL: http://proxy
+  FRONTEND_URL: http://localhost
+  ACCESS_JWT_TOKEN_EXPIRATION: 15m
+  REFRESH_JWT_TOKEN_EXPIRATION: 30d
+
+resources:
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+  requests:
+    cpu: "250m"
+    memory: "256Mi"

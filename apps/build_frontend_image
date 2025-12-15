@@ -1,0 +1,2 @@
+docker build -t localhost:5000/frontend:v1.0.0 -f frontend/docker/Dockerfile .
+docker push localhost:5000/frontend:v1.0.0

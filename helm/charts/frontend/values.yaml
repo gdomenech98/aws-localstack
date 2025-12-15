@@ -1,0 +1,23 @@
+replicaCount: 1
+
+image:
+  repository: 51.38.38.197:5000/frontend
+  tag: v1.0.0
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8151
+
+env:
+  NODE_ENV: production
+  JWT_SECRET: mysecret
+  NEXT_PUBLIC_SERVER_URL: http://proxy  # apunta al proxy/ingress
+
+resources:
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+  requests:
+    cpu: "250m"
+    memory: "256Mi"
