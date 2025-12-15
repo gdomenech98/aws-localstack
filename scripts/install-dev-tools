@@ -1,5 +1,9 @@
 #!/bin/bash
 set -e
+echo "👉 Actualizando APT..."
+sudo sed -i 's|http://.*.ubuntu.com/ubuntu|http://old-releases.ubuntu.com/ubuntu|g' /etc/apt/sources.list
+sudo apt-get update
+sudo apt-get upgrade
 
 echo "👉 Instalando dependencias para entorno AWS + K8s local..."
 
@@ -55,11 +59,11 @@ echo "📦 Instalando helm..."
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
 # ---------------------------
-# AWS Local 
+# AWS Local
 # ---------------------------
 echo "📦 Instalando awslocal..."
-sudo pip install localstack-client
-
+sudo apt install python3-pip
+pip install localstack-client
 
 echo "✅ Instalación completada."
 echo "Comprueba versiones:"

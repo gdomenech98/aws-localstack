@@ -6,6 +6,7 @@
 4. Kind -> herramienta que permite crear clusters de k8s locales
 5. Terraform -> Herramienta para crear infraestructura como codigo
 6. AWS CLI -> CLI que permite interactuar con aws
+7. AWS Local -> Permite crear servicios de aws locales
 7. Eksctl -> herramienta que permite crear clusters de aws (EKS service)
 8. Helm -> Gestor de paquetes para Kubernetes
 
