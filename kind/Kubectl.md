@@ -8,8 +8,9 @@ kubectl config get-contexts
 # Use specific context /cluster
 kubectl config use-context <name>
 
-kubectl apply -f or helm install → deploy apps
+# Check apps
+kubectl get pods
+# Check services
+kubectl get svc
 
-kubectl get pods → check apps
 
-kind delete cluster → remove cluster
