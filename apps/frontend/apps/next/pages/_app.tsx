@@ -13,8 +13,6 @@ import { Provider } from 'app/provider'
 import Head from 'next/head'
 import React, { useEffect } from 'react'
 import type { SolitoAppProps } from 'solito'
-import { useSessionStore } from 'app/bundles/auth/context/useSessionStore'
-import { getSessionCookie } from 'app/bundles/auth/utils/cookie'
 import { config } from 'app/config';
 import { config as faConfig } from '@fortawesome/fontawesome-svg-core';  // For chonky problems with icons and nextjs
 
@@ -25,13 +23,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 function MyApp({ Component, pageProps }: SolitoAppProps) {
-  const setSession = useSessionStore(s => s.setSession);
-  useEffect(() => {
-    if (document) {
-      const session = getSessionCookie(document?.cookie);
-      setSession(session); // Load session each page
-    }
-  }, [])
 
   return (
     <>

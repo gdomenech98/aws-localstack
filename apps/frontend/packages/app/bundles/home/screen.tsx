@@ -6,7 +6,7 @@ interface HealthResponse {
   message?: string;
 }
 
-const HomeScreen: React.FC = () => {
+export const HomeScreen: React.FC = () => {
   const [healthStatus, setHealthStatus] = useState<HealthResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

@@ -1,4 +1,4 @@
-import { HomeScreen, getServerSideProps as SSR } from 'app/bundles/home/screen'
+import { HomeScreen } from 'app/bundles/home/screen'
 import Head from 'next/head'
 
 export default function Page(props: any) {
@@ -12,7 +12,7 @@ export default function Page(props: any) {
   )
 }
 
-export const getServerSideProps = SSR
+// export const getServerSideProps = SSR
 
 
 /* Force Redirect into another page
