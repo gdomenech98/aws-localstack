@@ -1,8 +1,10 @@
 import express, { Express, Request, Response } from 'express';
+import cors from 'cors';
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
 
+app.use(cors());
 app.use(express.json());
 
 app.get('/health', (req: Request, res: Response) => {
@@ -23,7 +25,7 @@ app.get('/api/users', (req: Request, res: Response) => {
 
 app.post('/api/users', (req: Request, res: Response) => {
   const { name, email } = req.body;
-  
+
   if (!name || !email) {
     res.status(400).json({ error: 'Name and email are required' });
     return;
