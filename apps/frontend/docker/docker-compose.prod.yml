@@ -10,4 +10,3 @@ services:
     environment:
       - NODE_ENV=production
       - JWT_SECRET=mysecret
-      - MQTT_SERVER=ws://localhost/mqtt

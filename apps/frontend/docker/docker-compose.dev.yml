@@ -8,6 +8,5 @@ services:
     environment:
       - NODE_ENV=development
       - JWT_SECRET=mysecret
-      - MQTT_SERVER=ws://localhost/mqtt
     volumes:
-      - ${PWD}/apps/frontend:/app
+      - ${PWD}/frontend:/app

@@ -15,4 +15,4 @@ services:
       - ACCESS_JWT_TOKEN_EXPIRATION=15m
       - REFRESH_JWT_TOKEN_EXPIRATION=30d
     volumes:
-      - ${PWD}/apps/api:/app
+      - ${PWD}/api:/app
