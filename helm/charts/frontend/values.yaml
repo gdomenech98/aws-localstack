@@ -12,7 +12,7 @@ service:
 env:
   NODE_ENV: production
   JWT_SECRET: mysecret
-  NEXT_PUBLIC_SERVER_URL: http://proxy  # apunta al proxy/ingress
+  NEXT_PUBLIC_SERVER_URL: http://51.38.38.197
 
 resources:
   limits:

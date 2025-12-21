@@ -1,52 +1,110 @@
-# aws-localstack
-# Dependencies
-1. Docker -> define imagenes
-2. Docker Compose -> corre imagenes de docker
-3. Kubectl -> CLI para interactuar con k8s
-4. Kind -> herramienta que permite crear clusters de k8s locales
-5. Terraform -> Herramienta para crear infraestructura como codigo
-6. AWS CLI -> CLI que permite interactuar con aws
-7. AWS Local -> Permite crear servicios de aws locales
-7. Eksctl -> herramienta que permite crear clusters de aws (EKS service)
-8. Helm -> Gestor de paquetes para Kubernetes
+# Environment Setup & Deployment Guide
 
--> WORKING DEPENDENCIES
-- kubectl Client Version: v1.34.3
-- Kustomize Version: v5.7.1
-- kind kind version 0.31.0-alpha+ca7288bfd215bf
-- terraform Terraform v1.14.2
-- aws aws-cli/2.32.15 Python/3.13.11 Linux/6.11.0-29-generic exe/x86_64.ubuntu.24
-- eksctl 0.220.0
+This guide details how to set up the local development environment, including the Kubernetes cluster (Kind), Docker Registry, Traefik Ingress, and the Applications (API & Frontend).
 
-# 1. Setup
-1. Install deps using `./install-dev-tools`
-2. Start localstack using `docker-compose up -d`
-2. Check services: http://localhost:4566/_localstack/health 
+## Prerequisites
+Ensure you have the following tools installed:
+- Docker & Docker Compose
+- Kind (Kubernetes in Docker)
+- Helm
+- Kubectl
 
-# 2. Build 'apps' images and upload them to registry (ECR or docker local registry)
+## 1. Infrastructure Setup
 
-# 3. Create a cluster if already not created
+### Start Support Services (Registry & Localstack)
+Start the local Docker registry (port 5000) and Localstack via Docker Compose.
+```bash
+docker-compose up -d
+```
 
-# 4. Selecciona el contexto del cluster
-kubectl config use-context kind-my-cluster
-kubectl get nodes   # verifica que el cluster está activo
+### Create Kubernetes Cluster
+Create the Kind cluster using the custom configuration to expose ports 80/443 to your host.
 
-# 5. Instala/Despliega un chart
-helm install <release-name> ./charts/frontend -f ./charts/frontend/values-prod.yaml
-helm install <release-name> ./charts/api -f ./charts/api/values-prod.yaml
+> [!WARNING]
+> If a cluster named `my-cluster` already exists, delete it first: `kind delete cluster --name my-cluster`
 
-<release-name> → nombre único para el deployment en Helm.
+```bash
+kind create cluster --name my-cluster --config kind/kind-config.yaml
+```
 
-Si ya existe el release, usa upgrade:
+## 2. Build & Push Images
+Build the application images and push them to the local registry so the cluster can pull them.
 
-helm upgrade <release-name> ./charts/frontend -f ./charts/frontend/values-prod.yaml
+> **Note**: These commands run from the `apps/` directory or you can run the scripts provided there.
 
-# 6. Verifica los pods y servicios
-kubectl get pods
-kubectl get svc
-kubectl get ingress
+```bash
+cd apps
 
+# Build and Push API
+./build_api_image
+# OR manually:
+# docker build -t localhost:5000/api:v1.0.0 -f api/docker/Dockerfile .
+# docker push localhost:5000/api:v1.0.0
 
-kubectl describe pod <pod-name> → detalles y logs.
+# Build and Push Frontend
+./build_frontend_image
+# OR manually:
+# docker build -t localhost:5000/frontend:v1.0.0 -f frontend/docker/Dockerfile .
+# docker push localhost:5000/frontend:v1.0.0
 
-kubectl logs <pod-name> → logs del contenedor.
+cd ..
+```
+
+## 3. Ingress Controller (Traefik) configuration
+Install Traefik v3 using Helm. This handles incoming traffic on ports 80/443.
+
+### Add Traefik Repo
+Check have installed traefik repo
+```bash
+helm repo list | grep traefik
+```
+
+if not
+```bash
+helm repo add traefik https://traefik.github.io/charts
+helm repo update
+```
+
+### Install Traefik
+We use a custom values file (`helm/traefik-values.yaml`) to map the ports correctly.
+
+```bash
+helm install gateway traefik/traefik \
+  --create-namespace --namespace traefik \
+  -f helm/charts/gateway/traefik-values.yaml
+```
+
+## 4. Application Deployment
+Deploy the applications using Helm. We point them to the images in our local registry (IP: 51.38.38.197 is the VPS IP accessible from Kind, acting as the registry host).
+
+### Deploy API
+```bash
+helm install api ./helm/charts/api
+```
+
+### Deploy Frontend
+```bash
+helm install frontend ./helm/charts/frontend
+```
+
+## 5. Routing Configuration
+Apply the `IngressRoute` resources to define how Traefik routes traffic to the services.
+
+```bash
+kubectl apply -f k8s/ingress-route.yaml
+```
+
+## 6. Verification
+Your applications should now be accessible on your host machine (or VPS IP).
+
+- **API Health Check**:
+  ```bash
+  curl http://localhost/api/v1/health
+  # Expected: {"status":"ok"}
+  ```
+
+- **Frontend**:
+  ```bash
+  curl -I http://localhost/
+  # Expected: HTTP/1.1 200 OK
+  ```
