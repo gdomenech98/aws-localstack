@@ -12,8 +12,8 @@ service:
 env:
   NODE_ENV: production
   JWT_SECRET: mysecret
-  API_URL: http://proxy
-  FRONTEND_URL: http://localhost
+  API_URL: http://51.38.38.197
+  FRONTEND_URL: http://51.38.38.197
   ACCESS_JWT_TOKEN_EXPIRATION: 15m
   REFRESH_JWT_TOKEN_EXPIRATION: 30d
 
