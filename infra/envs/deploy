@@ -1,0 +1,7 @@
+#!/bin/bash
+
+export AWS_PROFILE=uncert-terraform-admin
+
+cd dev
+terraform init
+terraform apply
