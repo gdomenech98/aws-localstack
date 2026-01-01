@@ -15,7 +15,7 @@ resource "aws_s3_bucket" "this" {
   }
 
   tags = {
-    Environment = var.environment
+    Environment = "${var.app_name}-${var.environment}"
     ManagedBy   = "Terraform"
   }
 
