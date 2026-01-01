@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# deploy.sh
+# Usage: ./deploy.sh dev|staging|prod
+
+export AWS_PROFILE=uncert-terraform-admin
+
+
+# Valid params 
+VALID_ENVS=("dev" "staging" "prod")
+
+# Args
+ENV=$1
+
+# Error and exit function
+function error_exit {
+    echo "ERROR: $1"
+    echo "Usage: $0 ${VALID_ENVS[*]}"
+    exit 1
+}
+
+# Validate env is passed and valid
+if [ -z "$ENV" ]; then
+    error_exit "No environment specified"
+fi
+
+# Validate that the environment is valid
+if [[ ! " ${VALID_ENVS[@]} " =~ " ${ENV} " ]]; then
+    error_exit "Invalid environment: $ENV"
+fi
+
+# Environment folder
+ENV_DIR="./envs/$ENV"
+
+# Check folder exists
+if [ ! -d "$ENV_DIR" ]; then
+    error_exit "Environment folder not found: $ENV_DIR"
+fi
+
+
+echo "Deploying Terraform for environment: $ENV"
+
+cd "$ENV_DIR" || exit 1
+terraform init
+terraform apply
