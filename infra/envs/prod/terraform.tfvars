@@ -1,2 +1,3 @@
-bucket_name = "uncert-app-prod-bucket"
-environment   = "uncert-prod"
+bucket_name = "bucket"
+environment   = "prod"
+app_name = "uncert-app"
