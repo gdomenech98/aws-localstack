@@ -1,20 +1,49 @@
-# Detalles clave
+# How to deploy Infra using Terraform
 
-## Deploy
+## 🪐System overview
+
+The folder structure:
+```
+infra
+   |_ bootstrap
+   |_ envs
+      |_ dev
+      |_ prod
+      |_ staging
+   |_ modules
+      |_ s3
+      ...
+```
+- `bootstrap`: This folder contains the bootstrap to setup Terraform backend (s3 and dynamodb) services that will store terrafrom state.
+- `envs`: This folder contains each environment (`dev` | `prod` | `staging`) infrastucture terraformed with specific inputs. Each environment has its own backend (remote state and locking).
+- `modules`: Reusable pieces for each environment. Eg: s3 module define bucket with versioning, encryption, block public access and tags.
+
+## 🚀How to use infra?
+### Step 0 - Setup Users and Roles
+First you have to create 
+### Step 1 - Bootstrap Terraform Backend
+Then once created roles execute this commands:
+``` bash
+# Asume you are inside infra/ folder
+cd bootstrap
+terraform init
+terraform apply
+```
+
+🗒️DevOps Tips followed:
+ - The backend it is bootstrapped just one time. The terraform bootstrap it is never automanaged.
+ - The S3 bucket that stores the state has to have versioning enabled and. `S3 versioning enabled = automatic history`, easy recover if anyone breaks the state.
+ - The S3 bucket that stores the state has to have blocked the public access.
+ - The S3 bucket can be only accessed by user/role `uncert-terraform-admin`.
+ - Deny deletion of the state S3 bucket and DynamoDB table.
+ - DynamoDB that stores the lock should have just one key like `LockID`.
+ - Bootstrap infra  ≠ Aplication infra
+ - Deploy bootstrap to a separate repository. Changes to that repository are rare (not often done). Only seniors have write privileges to the Terraform state code.
+
+### Step 2 - Deploy
 
 Execute `./deploy` script changing AWS_PROFILE
 
-## Módulos
-
-Reutilizables para cualquier entorno.
-
-Ejemplo: s3 módulo define bucket con versioning, encryption, block public access y tags.
-
-## envs/<entorno>
-
-Contiene inputs específicos (variables) para ese entorno.
-
-Cada entorno tiene su propio backend (state remoto y locking).
 
 # Usuarios y Roles
 
