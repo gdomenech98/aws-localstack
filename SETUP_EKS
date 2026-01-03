@@ -1,0 +1,18 @@
+Entorno: dev / staging / prod
+└─ VPC (dedicada)
+   ├─ Subnets públicas → Ingress / ALB
+   ├─ Subnets privadas → Node groups
+   │
+   └─ EKS Cluster (managed, multi-AZ)
+      ├─ Node groups
+      │   ├─ EC2 → backend Node.js
+      │   └─ Fargate → frontend Next.js
+      │
+      ├─ Pods con IRSA → roles IAM asignados a ServiceAccounts
+      │   └─ Control de permisos por pod (S3, DynamoDB, etc.)
+      │
+      ├─ KMS / Secrets / RBAC → seguridad y cifrado
+      └─ Logging / Metrics / Tracing → observabilidad
+
+CI/CD → Terraform + Helm + GitOps
+Backups / DR → snapshots, Velero, multi-AZ
