@@ -24,7 +24,7 @@ resource "aws_iam_role" "this" {
 # ///////////////// POLICIES /////////////////
 
 # S3 Policies
-data "aws_iam_policy_document" "s3_dev" {
+data "aws_iam_policy_document" "s3" {
   statement {
     actions = ["s3:ListAllMyBuckets"]
     resources = ["*"]
@@ -46,7 +46,7 @@ data "aws_iam_policy_document" "s3_dev" {
 # Create IAM policy
 resource "aws_iam_policy" "this" {
   name   = "${var.app_name}-${var.environment}-policy"
-  policy = data.aws_iam_policy_document.s3_dev.json
+  policy = data.aws_iam_policy_document.s3.json
 }
 
 # Attach Policy to role
